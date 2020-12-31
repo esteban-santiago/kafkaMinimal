@@ -1,0 +1,11 @@
+
+CREATE STREAM  ksql_message_from_hello (id integer, message varchar(30)) with( KAFKA_TOPIC='news', VALUE_FORMAT='json');
+select * from ksql_message_from_hello;
+
+CREATE TABLE messages (id BIGINT, message VARCHAR) WITH (KAFKA_TOPIC = 'news', VALUE_FORMAT='JSON', KEY = 'id');
+
+CREATE TABLE messages_with_big_id AS SELECT id, message FROM ksql_message_from_hello WHERE id>500000;
+
+CREATE TABLE mhello AS
+  SELECT id, message FROM users
+  WHERE gender='FEMALE';
